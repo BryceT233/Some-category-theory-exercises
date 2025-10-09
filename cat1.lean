@@ -46,8 +46,6 @@ private lemma exists_iso (y : 𝓖) : ∃ f : x ⟶ y, IsIso f := by
 private noncomputable def τ : (y : 𝓖) → (x ⟶ y) := fun y =>
     if h : x = y then eqToHom h else choose (exists_iso x y)
 
-private lemma τ_xx : τ x x = 𝟙 x := by simp [τ]
-
 /-- Define the inverse equivalence of the inclusion functor-/
 noncomputable def AutCat_inverseFunctor := @CategoryTheory.Functor.mk 𝓖 _ (SingleObj 𝓖)
     (AutCat x) (fun _ => ()) (by simp only [AutCat]; intro y z f; exact {
@@ -64,8 +62,7 @@ lemma aux_eq : @Functor.id (SingleObj 𝓖) (AutCat x) =
       Functor.comp_obj]
     intro; rfl
   simp only [Functor.id_obj, Functor.id_map, AutCat_inclusionFunctor, id_eq, AutCat_inverseFunctor,
-    Functor.comp_obj, Functor.comp_map, τ_xx, IsIso.inv_id, Category.comp_id, Category.id_comp,
-    IsIso.Iso.inv_hom, heq_eq_eq]
+    Functor.comp_obj, Functor.comp_map, τ, IsIso.Iso.inv_hom, heq_eq_eq]
   cat_disch
 
 /-- Define a natural isomorphism from `AutCat_inverseFunctor x ≫ AutCat_inclusionFunctor x` to the identity functor on `𝓖`-/
