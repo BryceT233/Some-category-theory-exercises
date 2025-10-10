@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bingyu Xia
 -/
 
-import Mathlib
+import Mathlib.CategoryTheory.Groupoid
 
 /-! Let $\mathcal{C}$ be a category. Show that the collection of isomorphisms in $\mathcal{C}$ defines a subcategory,
 the maximal groupoid inside $\mathcal{C}$. -/

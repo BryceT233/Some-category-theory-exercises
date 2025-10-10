@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bingyu Xia
 -/
 
-import Mathlib
+import Mathlib.CategoryTheory.IsConnected
+import Mathlib.CategoryTheory.SingleObj
+import Mathlib.Combinatorics.Quiver.ReflQuiver
 
 open CategoryTheory Classical
 
@@ -32,15 +34,15 @@ variable [IsPreconnected 𝓖] [IsGroupoid 𝓖]
 
 /-- If `𝓖` is a preconnected groupoid, prove that for all `y` in `𝓖` there exists an isomorphism from `x` to `y` -/
 private lemma exists_iso (y : 𝓖) : ∃ f : x ⟶ y, IsIso f := by
-  suffices : ∀ y, y ∈ {y | ∃ f : x ⟶ y, IsIso f}
+  have : ∀ y, y ∈ {y | ∃ f : x ⟶ y, IsIso f} := by
+    have : x ∈ {y | ∃ f : x ⟶ y, IsIso f} := by
+      rw [Set.mem_setOf_eq]; use 𝟙 x
+      exact IsIso.id x
+    apply induct_on_objects _ this
+    intro z w g; simp only [Set.mem_setOf_eq]; constructor
+    · rintro ⟨f, hf⟩; use f ≫ g; apply IsIso.comp_isIso
+    rintro ⟨f, hf⟩; use f ≫ inv g; apply IsIso.comp_isIso
   · exact this y
-  have : x ∈ {y | ∃ f : x ⟶ y, IsIso f} := by
-    rw [Set.mem_setOf_eq]; use 𝟙 x
-    exact IsIso.id x
-  apply induct_on_objects _ this
-  intro z w g; simp only [Set.mem_setOf_eq]; constructor
-  · rintro ⟨f, hf⟩; use f ≫ g; apply IsIso.comp_isIso
-  rintro ⟨f, hf⟩; use f ≫ inv g; apply IsIso.comp_isIso
 
 /-- Choose an isomorphism `τ x y : x ⟶ y` for every `y` in `𝓖` and $τ x x = 𝟙 x$-/
 private noncomputable def τ : (y : 𝓖) → (x ⟶ y) := fun y =>

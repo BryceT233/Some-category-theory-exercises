@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bingyu Xia
 -/
 
-import Mathlib
+import Mathlib.Combinatorics.Quiver.ReflQuiver
 
 /-! Assuming the axiom of choice, prove that any full, faithful, and essentially surjective functor
 defines an equivalence of categories.-/
